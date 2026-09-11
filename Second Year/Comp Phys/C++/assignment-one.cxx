@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <math.h>
 #include <string>
-#include "C:\Users\Owner\Desktop\Headers\gnuplot-iostream"
+// #include "C:\Users\Owner\Desktop\Headers\gnuplot-iostream"
 using namespace std;
 
 double modulo(double a, double b)
@@ -73,10 +73,6 @@ int double_to_bin() {
     }
 
     frac = modulo(dec, 1);
-    // frac = int(frac_double);
-
-    //cout <<"\n Modulo: " << modulo(dec, 1) << "\n Sig Figs:" << sigfig << "\n DFrac: " << frac_double << "\n IFrac: " << frac;
-
 
     dec_str = int_to_bin(dec);
 
