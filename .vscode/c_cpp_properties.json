@@ -4,7 +4,7 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/Users/Owner/**"
+                "C:/Users/Owner/Desktop/Headers"
             ],
             "defines": [
                 "_DEBUG",

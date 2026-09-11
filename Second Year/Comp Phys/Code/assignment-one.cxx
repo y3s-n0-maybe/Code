@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <math.h>
 #include <string>
-#include "C:\Users\Owner\gnuplot-iostream"
+#include "C:\Users\Owner\Desktop\Headers\gnuplot-iostream"
 using namespace std;
 
 double modulo(double a, double b)
@@ -144,8 +144,9 @@ int delays(){
 
 
 int main() {
-    delays();
-    /* int choice = 0;
+    // delays();
+    // /*
+    int choice = 0;
     cout << "Which function would you like to run? \n1. Sum & Product of 3 Doubles \n2. Convert a double to a binary number \n3. Convert a binary number to a double \n";
     cin >> choice;
     switch(choice){
@@ -164,6 +165,6 @@ int main() {
         default: 
             cout << "Invalid Choice. Please run again.";
     }
-    */
+    // */
     return 0;
 }
