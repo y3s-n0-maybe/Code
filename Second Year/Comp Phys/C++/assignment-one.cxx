@@ -3,14 +3,58 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <math.h>
-#include <string>
-// #include "C:\Users\Owner\Desktop\Headers\gnuplot-iostream"
+#include <stdlib.h>
+#include <stdarg.h>
+#include <assert.h>
+#include <algorithm>
+#include "gnuplot.cxx"
+#include <fstream>
 using namespace std;
+string file_dir = "C:/Users/Owner/Desktop/Code/Second Year/Comp Phys/Junk Drawer/dice.dat";
+// ^^ will need to be changed if running on different machine
+std::ifstream infile(file_dir);
 
 double modulo(double a, double b)
 {
     int i = a / b;
     return a - i * b;
+}
+
+double mean(double arr[], int length){
+    double sum = 0;
+    for(int i = 0; i < length; i++){
+        sum += arr[i];
+    }
+
+    double avg = sum/length;
+    return avg;
+}
+
+double stdev(double arr[], int length){
+    double avg = mean(arr, length);
+    double dev_sum = 0;
+    for(int i = 0; i < length; i++){
+        dev_sum += pow((arr[i] - avg), 2);
+    }
+
+    double stand_dev = pow(dev_sum / (length - 1), .5);
+    return stand_dev;
+}
+
+double median(double arr[], int length){
+    std::sort(arr, arr+length);
+
+    int len = length/2;
+    double med;
+
+    if(length % 2 == 0){
+        med = (arr[len] + arr[len - 1])/2;
+    }else if (length % 2 == 1)
+    {
+        med = arr[len];
+    }
+
+    return med;
 }
 
 string int_to_bin(int n) {
@@ -37,7 +81,7 @@ string int_to_bin(int n) {
     return bin;
 }
 
-int sum_prod() {
+void sum_prod() {
     double a,b,c = 0.0;
 
     cout << "A = ";
@@ -48,11 +92,9 @@ int sum_prod() {
     cin >> c;
 
     cout << "Sum = " << a + b + c << "\nProduct = " << a*b*c;
-
-    return 0;
 }
 
-int double_to_bin() {
+void double_to_bin() {
     double dec = 0.0;
     int sigfig = 0;
     double frac = 0;
@@ -87,10 +129,9 @@ int double_to_bin() {
     }
     
     cout << "\nBinary Form: "  << dec_str + "." + frac_str;
-    return 0;
 }
 
-int bin_to_double() {
+void bin_to_double() {
     string binary = "";
     char c_sux = '.';
     double decimal = 0;
@@ -121,29 +162,55 @@ int bin_to_double() {
         i++;
     }
     cout << "\nDecimal Form: " << decimal;
-    return 0;
 }
 
-int delays(){
+void delays(){
     int arr_length = 10;
-    int delays[arr_length] = {4, 10, 12, 55, 22, 15, 8, 7, 9, 8};
-    
-    double sum = 0;
-    for(int i = 0; i < arr_length; i++){
-        sum += delays[i];
+    double delays[arr_length] = {4, 10, 12, 55, 22, 15, 8, 7, 9, 8};
+    int i = 0;
+
+    double avg = mean(delays, arr_length);
+
+    double stand_dev = stdev(delays, arr_length);
+
+    cout << "\nMean: " << avg << "\nStandard Deviation: " << stand_dev << "\n";
+
+    double day[arr_length] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0};
+
+    gnuplot_one_function ("220 Delays","linespoints", "Day", "minutes delayed", day, delays, arr_length);
+}
+
+void dice_calc(){
+    if(infile.good()){
+        cout << "Good to go!";
+    }
+    else {
+        cout << "Wuh oh";
+        return;
+    } 
+
+    int len = 40;
+    double exp[len];
+    double res[len];
+    double a, b;
+
+    int i = 0;
+    while(infile >> a >> b){
+        exp[i] = a;
+        res[i] = b;
+        i++;
     }
 
-    double avg = sum/arr_length;
-    cout << avg;
+    cout << "\nMean: " << mean(res, len) << "\nMedian: " << median(res, len) << "\nStandard Deviation: " << stdev(res, len);
 
 }
 
 
 int main() {
-    // delays();
-    // /*
+    dice_calc();
+    /*
     int choice = 0;
-    cout << "Which function would you like to run? \n1. Sum & Product of 3 Doubles \n2. Convert a double to a binary number \n3. Convert a binary number to a double \n";
+    cout << "Which function would you like to run? \n1. Sum & Product of 3 Doubles \n2. Convert a double to a binary number \n3. Convert a binary number to a double \n4. Calculate mean & stdev of delays \n";
     cin >> choice;
     switch(choice){
         case 1:
@@ -161,6 +228,7 @@ int main() {
         default: 
             cout << "Invalid Choice. Please run again.";
     }
-    // */
+    */
+
     return 0;
 }
