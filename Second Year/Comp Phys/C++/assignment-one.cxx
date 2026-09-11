@@ -91,7 +91,7 @@ void sum_prod() {
     cout << "C = ";
     cin >> c;
 
-    cout << "Sum = " << a + b + c << "\nProduct = " << a*b*c;
+    cout << "\nSum = " << a + b + c << "\nProduct = " << a*b*c << "\n";
 }
 
 void double_to_bin() {
@@ -128,7 +128,7 @@ void double_to_bin() {
         i ++;
     }
     
-    cout << "\nBinary Form: "  << dec_str + "." + frac_str;
+    cout << "\nBinary Form: "  << dec_str + "." + frac_str << "\n";
 }
 
 void bin_to_double() {
@@ -161,7 +161,7 @@ void bin_to_double() {
         
         i++;
     }
-    cout << "\nDecimal Form: " << decimal;
+    cout << "\nDecimal Form: " << decimal << "\n";
 }
 
 void delays(){
@@ -182,10 +182,10 @@ void delays(){
 
 void dice_calc(){
     if(infile.good()){
-        cout << "Good to go!";
+        cout << "\nFile read succesfully, good to go!";
     }
     else {
-        cout << "Wuh oh";
+        cout << "\nFile not read succesfully. Check if file_dir is correct";
         return;
     } 
 
@@ -201,34 +201,50 @@ void dice_calc(){
         i++;
     }
 
-    cout << "\nMean: " << mean(res, len) << "\nMedian: " << median(res, len) << "\nStandard Deviation: " << stdev(res, len);
+    string s;
 
+    cout << "\nMean: " << mean(res, len) << "\nMedian: " << median(res, len) << "\nStandard Deviation: " << stdev(res, len) << "\n";
 }
 
 
 int main() {
-    dice_calc();
-    /*
     int choice = 0;
-    cout << "Which function would you like to run? \n1. Sum & Product of 3 Doubles \n2. Convert a double to a binary number \n3. Convert a binary number to a double \n4. Calculate mean & stdev of delays \n";
-    cin >> choice;
-    switch(choice){
-        case 1:
-            sum_prod();
-            break;
-        case 2:
-            double_to_bin();
-            break;
-        case 3:
-            bin_to_double();
-            break;
-        case 4:
-            delays();
-            break;
-        default: 
-            cout << "Invalid Choice. Please run again.";
-    }
-    */
 
-    return 0;
+    while(choice != 6){
+        choice = 0;
+        
+        cout << "\nWhich function would you like to run? \n";
+        cout << "1. Sum & Product of 3 Doubles \n";
+        cout << "2. Convert a double to a binary number \n";
+        cout << "3. Convert a binary number to a double \n";
+        cout << "4. Calculate mean & stdev of delays \n";
+        cout << "5. Calculate mean, median, & stdev of 2d6 rolls\n";
+        cout << "6. End Program\n";
+
+        cin >> choice;
+
+        switch(choice){
+            case 1:
+                sum_prod();
+                break;
+            case 2:
+                double_to_bin();
+                break;
+            case 3:
+                bin_to_double();
+                break;
+            case 4:
+                delays();
+                break;
+            case 5:
+                dice_calc();
+                break;
+            case 6:
+                cout << "\nThank you! Stopping program.\n";
+                return 0;
+            default: 
+                cout << "\nInvalid Choice.\n";
+        }
+    }
+
 }
