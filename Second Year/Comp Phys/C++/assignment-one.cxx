@@ -20,7 +20,8 @@ double modulo(double a, double b)
     return a - i * b;
 }
 
-double mean(double arr[], int length){
+double mean(double arr[], int length)
+{
     double sum = 0;
     for(int i = 0; i < length; i++){
         sum += arr[i];
@@ -30,7 +31,8 @@ double mean(double arr[], int length){
     return avg;
 }
 
-double stdev(double arr[], int length){
+double stdev(double arr[], int length)
+{
     double avg = mean(arr, length);
     double dev_sum = 0;
     for(int i = 0; i < length; i++){
@@ -41,7 +43,8 @@ double stdev(double arr[], int length){
     return stand_dev;
 }
 
-double median(double arr[], int length){
+double median(double arr[], int length)
+{
     std::sort(arr, arr+length);
 
     int len = length/2;
@@ -57,7 +60,8 @@ double median(double arr[], int length){
     return med;
 }
 
-string int_to_bin(int n) {
+string int_to_bin(int n) // takes an integer & returns a string of its value in binary
+{
     int quot = 0;
     int rem = 0;
 
@@ -81,7 +85,8 @@ string int_to_bin(int n) {
     return bin;
 }
 
-void sum_prod() {
+void sum_prod()
+{
     double a,b,c = 0.0;
 
     cout << "A = ";
@@ -94,7 +99,8 @@ void sum_prod() {
     cout << "\nSum = " << a + b + c << "\nProduct = " << a*b*c << "\n";
 }
 
-void double_to_bin() {
+void double_to_bin()
+{
     double dec = 0.0;
     int sigfig = 0;
     double frac = 0;
@@ -131,7 +137,8 @@ void double_to_bin() {
     cout << "\nBinary Form: "  << dec_str + "." + frac_str << "\n";
 }
 
-void bin_to_double() {
+void bin_to_double()
+{
     string binary = "";
     char c_sux = '.';
     double decimal = 0;
@@ -164,7 +171,8 @@ void bin_to_double() {
     cout << "\nDecimal Form: " << decimal << "\n";
 }
 
-void delays(){
+void delays()
+{
     int arr_length = 10;
     double delays[arr_length] = {4, 10, 12, 55, 22, 15, 8, 7, 9, 8};
     int i = 0;
@@ -180,7 +188,8 @@ void delays(){
     gnuplot_one_function ("220 Delays","linespoints", "Day", "minutes delayed", day, delays, arr_length);
 }
 
-void dice_calc(){
+void dice_calc()
+{
     if(infile.good()){
         cout << "\nFile read succesfully, good to go!";
     }
@@ -207,7 +216,8 @@ void dice_calc(){
 }
 
 
-int main() {
+int main()
+{
     int choice = 0;
 
     while(choice != 6){
@@ -246,5 +256,5 @@ int main() {
                 cout << "\nInvalid Choice.\n";
         }
     }
-
+    return 0;
 }
