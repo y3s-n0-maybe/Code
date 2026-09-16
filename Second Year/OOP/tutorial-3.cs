@@ -37,9 +37,68 @@ namespace TutorialThree
             return sum;
         }
 
+        static void Quadratic()
+        {
+            Console.Write("A: ");
+            double a = Convert.ToDouble(Console.ReadLine());
+
+            Console.Write("B: ");
+            double b = Convert.ToDouble(Console.ReadLine());
+
+            Console.Write("C: ");
+            double c = Convert.ToDouble(Console.ReadLine());
+
+            double unsq = (b * b) - (4 * a * c);
+            if(unsq > 0)
+            {
+               double d = Math.Sqrt(unsq);
+               double bp = (d - b) / (2 * a);
+               double bm = (0-(d + b)) / (2 * a);
+               Console.WriteLine("Two Roots \n x = " + bm + "\n x = " + bp);
+            }
+            else if(Math.Abs(unsq) < 0.0001)
+            {
+                double root = b / (2 * a);
+                Console.WriteLine("One Root: " + root);
+            }
+            else if(unsq < 0)
+            {
+                Console.WriteLine("Imaginary Roots");
+            }
+            else
+            {
+                Console.WriteLine("Error.");
+            }
+        }
+
+        static void TossACoin(int n)
+        {
+            int heads = 0;
+            Random rnd = new Random();
+
+            for(int i = 0; i > n; i++)
+            {
+                int flip = rnd.Next(2);
+                if(flip == 1)
+                {
+                    heads++;
+                }
+            }
+
+            double perc_h = (Convert.ToDouble(heads)/Convert.ToDouble(n)) * 100;
+            Console.WriteLine("No. Flips: " + n + 
+                                "\nNo. Heads: " + heads + 
+                                "\nNo. Tails: " + (n-heads) + 
+                                "\n% Heads: " + perc_h +
+                                "\n% Tails: " + (100-perc_h));
+        }
+
         static void Main()
         {
-            Console.WriteLine("What would you like to run?\n1. Sum up to n\n2. Integer to Ascii");
+            Console.WriteLine("What would you like to run?" + 
+                            "\n1. Sum up to n" + 
+                            "\n2. Quadratic Formula" + 
+                            "\n3. Flip a Coin N times");
             int choice = Convert.ToInt32(Console.ReadLine());
 
             switch (choice)
@@ -48,6 +107,12 @@ namespace TutorialThree
                     SumMethod();
                     break;
                 case 2:
+                    Quadratic();
+                    break;
+                case 3:
+                    Console.WriteLine("How many Flips?");
+                    int n = Convert.ToInt32(Console.ReadLine());
+                    TossACoin(n);
                     break;
             }
         }
