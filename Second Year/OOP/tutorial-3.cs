@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace TutorialThree
 {
     class OOPA
@@ -7,7 +9,7 @@ namespace TutorialThree
             Console.WriteLine("Value for n?");
             int n = Convert.ToInt32(Console.ReadLine());
 
-            Console.WriteLine("Method 1 or 2?");
+            Console.WriteLine("1. Loop \n2. Formula \n3. Stopwatch");
             int choice = Convert.ToInt32(Console.ReadLine());
 
             switch (choice)
@@ -17,6 +19,9 @@ namespace TutorialThree
                     break;
                 case 2:
                     Console.WriteLine(SumFormula(n));
+                    break;
+                case 3:
+                    SumStopwatch(n);
                     break;
             }
         }
@@ -35,6 +40,30 @@ namespace TutorialThree
         {
             int sum = (n*(n+1))/2;
             return sum;
+        }
+
+        static void SumStopwatch(int n)
+        {
+            Stopwatch stopWatchLoop = new Stopwatch();
+            Stopwatch stopWatchForm = new Stopwatch();
+
+            stopWatchLoop.Start();
+            for(int i = 0; i < 1000000; i++)
+            {
+                SumLoop(n);
+            }
+            stopWatchLoop.Stop();
+
+            stopWatchForm.Start();
+            for(int i = 0; i < 1000000; i++)
+            {
+                SumFormula(n);
+            }
+            stopWatchForm.Stop();
+
+            Console.WriteLine("One Million Loops: " + stopWatchLoop.ElapsedMilliseconds);
+            Console.WriteLine("One Million Formulae: " + stopWatchForm.ElapsedMilliseconds);
+
         }
 
         static void Quadratic()
@@ -74,9 +103,9 @@ namespace TutorialThree
         static void TossACoin(int n)
         {
             int heads = 0;
-            Random rnd = new Random();
+            var rnd = new Random();
 
-            for(int i = 0; i > n; i++)
+            for(int i = 0; i < n; i++)
             {
                 int flip = rnd.Next(2);
                 if(flip == 1)
@@ -85,12 +114,12 @@ namespace TutorialThree
                 }
             }
 
-            double perc_h = (Convert.ToDouble(heads)/Convert.ToDouble(n)) * 100;
+            int perc_h = ((heads*100)/(n));
             Console.WriteLine("No. Flips: " + n + 
                                 "\nNo. Heads: " + heads + 
                                 "\nNo. Tails: " + (n-heads) + 
-                                "\n% Heads: " + perc_h +
-                                "\n% Tails: " + (100-perc_h));
+                                "\n% Heads: " + perc_h + "%" +
+                                "\n% Tails: " + (100-perc_h) + "%");
         }
 
         static void Main()
