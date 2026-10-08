@@ -69,7 +69,7 @@ double gx(double x){
 }
 
 double IntegralGx(double x) {
-    double y = (300 * (PolylogarithmApproximation(2, -exp(-x), 10))) - (x * log(exp(-x) + 1));
+    double y = (300 * (PolylogarithmApproximation(2, -exp(-x), 100000))) - (x * log(exp(-x) + 1));
     return y;
 }
 
@@ -100,9 +100,9 @@ void SmallAngleApproxError(){
         step *= .1;
     }
 
-    cout << "Small angle approximation breaks down at " << n << " radians\n";
+    cout << "The small angle approximation breaks down at " << n << " radians\n";
 
-    cout << "A second order Taylor approximation of sin returns an error of " ;
+    cout << "A second order Taylor approximation of sine returns an error of " ;
     cout << Error(SinApprox(n), sin(n), "rel abs")*100;
     cout << "\% at " << n << " radians\n";
 
@@ -120,7 +120,7 @@ void SmallAngleApproxError(){
         step *= .1;
     }
 
-    cout << "Second order Taylor approximation of sin breaks down at " << n << " radians\n";
+    cout << " A second order Taylor approximation of sine breaks down at " << n << " radians\n";
 }
 
 void ErrorComparison(double x, double d, string type)
@@ -137,49 +137,48 @@ void ErrorComparison(double x, double d, string type)
 void Derivatives() {
     double d = 0.0;
     double n = 0.0;
-    
-    cout << "For What x? ";
-    cin >> n;
-    cout << "\nFor what delta x? ";
-    cin >> d;
-
     int choice = 1;
 
     while (choice != 0){
-    cout << "\nWhich Method?\n";
-    cout << "0. Quit \n";
-    cout << "1. Central Approximation \n";
-    cout << "2. Forward Approximation \n";
-    cout << "3. Backward Approximation \n";
-    cout << "4. Compare Errors\n";
-    cin >> choice;
 
-    switch(choice){
-        case 0:
-            break;
-        case 1:
-            cout << "Central approximation of F'(x) at x = " << n << " with a dx of " << d << " = ";
-            cout << DerivationApprox(n, d, fx, "central");
-            break;
-        case 2:
-            cout << "Forward approximation of F'(x) at x = " << n << " with a dx of " << d << " = ";
-            cout << DerivationApprox(n, d, fx, "forward");
-            break;
-        case 3:
-            cout << "Backward approximation of F'(x) at x = " << n << " with a dx of " << d << " = ";
-            cout << DerivationApprox(n, d, fx, "backward");
-            break;
-        case 4:
-            cout << "What kind of error (absolute, relative)? ";
-            
-            string dummy = "";
-            getline(cin, dummy); // need dummy getline to read ghost newline character
+    
+        cout << "\nWhat would you like to do?\n";
+        cout << "0. Quit \n";
+        cout << "1. Central Approximation \n";
+        cout << "2. Forward Approximation \n";
+        cout << "3. Backward Approximation \n";
+        cout << "4. Compare Errors\n";
+        cin >> choice;
 
-            string type = "";
-            getline(cin, type);
-            ErrorComparison(n, d, type);
+        if(choice == 0){
             break;
-    }}
+        }
+
+        cout << "\nFor What x? ";
+        cin >> n;
+        cout << "\nFor what delta x? ";
+        cin >> d;
+
+        switch(choice){
+            case 0:
+                break;
+            case 1:
+                cout << "Central approximation of F'(x) at x = " << n << " with a dx of " << d << " = ";
+                cout << DerivationApprox(n, d, fx, "central");
+                break;
+            case 2:
+                cout << "Forward approximation of F'(x) at x = " << n << " with a dx of " << d << " = ";
+                cout << DerivationApprox(n, d, fx, "forward");
+                break;
+            case 3:
+                cout << "Backward approximation of F'(x) at x = " << n << " with a dx of " << d << " = ";
+                cout << DerivationApprox(n, d, fx, "backward");
+                break;
+            case 4:
+                ErrorComparison(n, d, "absolute");
+                break;
+        }   
+    }
 }
 
 double IntegralApproximation(double a, double b, int n, double (*func)(double)){
@@ -194,21 +193,17 @@ double IntegralApproximation(double a, double b, int n, double (*func)(double)){
 
 void Integrals(double a, double b, int n){
         
-    cout << "Approx: " << IntegralApproximation(a, b, n, gx) << "\n";
-    cout << "Eval: " << EvaluatedIgx(a, b) << "\n";
+    cout << "Approximation: " << IntegralApproximation(a, b, n, gx) << "\n";
+    cout << "True Value: " << EvaluatedIgx(a, b) << "\n";
     cout << "Error: " << Error(IntegralApproximation(a, b, n, gx), EvaluatedIgx(a, b), "absolute, relative") * 100 << "\%";
 }
 
 int main()
 {
-
-    Integrals(0, 10, 100);
-
-    /*
     int choice = 1;
 
     while(choice != 0){
-        cout << "\nWhich function would you like to run? \n";
+        cout << "\n\nWhich function would you like to run? \n";
         cout << "0. Quit \n";
         cout << "1. Small Angle Approximation \n";
         cout << "2. Derivatives \n";
@@ -226,11 +221,20 @@ int main()
                 Derivatives();
                 break;
             case 3:
-                Integrals();
+                double a, b;
+                cout << "Start Value: ";
+                cin >> a;
+                cout << "Stop Value: ";
+                cin >> b;
+                int n;
+                cout << "Trapezoidal Approximation Steps: ";
+                cin >> n;
+
+                Integrals(a, b, n);
                 break;
             default: 
                 cout << "\nInvalid Choice.\n";
         }
-    }*/
+    }
     return 0;
 }
