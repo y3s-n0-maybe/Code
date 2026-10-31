@@ -1,100 +1,143 @@
 #include <stdio.h>
-#include <fstream> // for file access
 #include <iostream>
 #include <stdlib.h>
-#include <sstream>
-#include <string>
 #include <vector>
-#include <tuple>
-#include <cmath>
 using namespace std;
 
+// matrix stuff: 
 
+class Matrix{
+    public:
+        int rows;
+        int cols;
+        vector<vector<double>> mat;
 
-
-vector<double> Bm = {111, 118, 114, 163};
-vector<vector<double>> Am = {{13., 10., 1., 3.}, {4., 6., 8., 14.}, {7., 5., 2., 15.}, {9., 12., 16., 11.}};
-
-void PrintMatrix(vector<vector<double>> x, int rows, int cols){ // made this to print matrices but it only ever works hte first time its called
-    for(int i = 0; i < rows; i++){
-        cout << "|";
-        for(int j = 0; j < cols; j++){
-            if(j == cols - 1){
-                cout << "| ";
-            }
-            printf("%-10g", x[i][j]);
+        Matrix(vector<vector<double>> matrix, int row_size, int col_size){
+            mat = matrix;
+            rows = row_size;
+            cols = col_size;
         }
-        cout << "\n";
-    }
-}
 
+        double Address(int i, int j){
+            if(i >= rows || i < 0){
+                printf("Called %dth row when only %d rows exist", i, rows);
+                return 0;
+            }else if (j >= cols || j < 0){
+                printf("Called %dth column when only %d columns exist", j, cols);
+                return 0;
+            }else{
+                return mat[i][j];
+            }
+            
+        }
 
-void GaussianElimination(vector<vector<double>> A, vector<double> B, int rows, int cols){
-    for(int i = 0; i < rows; i++){
-        A[i].resize(cols);
-        A[i][cols] = B[i];
+        void RowAddition(int changed, int unchanged, double n){
+            for (int i = 0; i < cols; i++)
+            {
+                mat[changed][i] = Address(changed, i) + n*Address(unchanged, i);
+            }
+            
+        }
+
+        void Print(){
+            for(int i = 0; i < rows; i++){
+                for(int j = 0; j < cols; j++){
+                    printf("%-15g", mat[i][j]);
+                }
+            cout << "\n";
+            }
+        }
+
+        void Add_Column(vector<double> B){
+            for(int i = 0; i < rows; i++){
+                mat[i].resize(cols);
+                mat[i][cols] = B[i];
+            }
+            cols ++;
+        }
+
+        double Determinant();
+        void UpperTriangify();
+
+};
+
+void Matrix::UpperTriangify(){
+    double div;
+
+    for (int i = 0; i < rows; i++){
+        for (int n = i+1; n < rows; n++){
+            div = -(Address(n,i) / Address(i, i));
+            cout << div << "\n";
+            RowAddition(n, i, div);
+            Print();
+            cout << "\n";
+        }
+        
     }
     
-    cols ++;
+    
+}
+
+double Matrix::Determinant(){
+    if(rows != cols){
+        cout << "Matrix not square";
+        return 0;
+    }
+
+    UpperTriangify();
+    
+    double sum = 1.;
+
+    for(int n = 0; n < rows; n++){
+        sum *= Address(n, n);
+    }
+
+    return sum;
+}
+
+// matrix stuff dones
+
+void GaussianElimination(Matrix A, vector<double> B){
+    int rows = A.rows;
+    A.Add_Column(B);
+    int cols = A.cols;
 
     cout << "\n---------- Matrix ----------\n";
-    for(int i = 0; i < rows; i++){
-        for(int j = 0; j < cols; j++){
-            if(j == cols - 1){
-                cout << "| ";
-            }
-            printf("%-10g", A[i][j]);
-        }
-        cout << "\n";
-    }
+    A.Print();
 
     double div;
 
-    for(int n = 0; n < rows; n++){
-        div = A[n][n]; // diaganol value of n
-        for(int i = n; i < cols; i++){
-            A[n][i] = A[n][i] / div; // sets row n to have its nth value equal to 1
-        }
+    A.UpperTriangify();
 
-        for(int i = n+1; i < rows; i ++){
-            div = A[i][n]; // holds nth value of ith row
-            for(int j = n; j < cols; j++){
-                A[i][j] = A[i][j] - div*A[n][j]; 
-            }
+        for(int n = 0; n < rows; n++){
+        div = A.Address(n, n); // diaganol value of n
+        for(int i = n; i < cols; i++){
+            A.mat[n][i] = A.Address(n, i) / div; // sets row n to have its nth value equal to 1
         }
     }
 
     cout << "\n---------- Upper Triangle Matrix ----------\n";
-    for(int i = 0; i < rows; i++){
-        for(int j = 0; j < cols; j++){
-            if(j == cols - 1){
-                cout << "| ";
-            }
-            printf("%-10g", A[i][j]);
-        }
-        cout << "\n";
-    }
+    A.Print();
 
     for(int n = 3; n > 0; n--){
         for(int i = 0; i < n ; i ++){
-            div = A[i][n];
-            A[i][n] = 0;
-            A[i][4] = A[i][4] - div*A[n][4];
+            div = A.mat[i][n];
+            A.mat[i][n] = 0;
+            A.mat[i][4] = A.mat[i][4] - div*A.mat[n][4];
         }
     }
 
     cout << "\n---------- Solved Matrix ----------\n";
-    for(int i = 0; i < rows; i++){
-        for(int j = 0; j < cols; j++){
-            if(j == cols - 1){
-                cout << "| ";
-            }
-            printf("%-10g", A[i][j]);
-        }
-        cout << "\n";
-    }
+    A.Print();
 }
 
+
 int main(){
-    GaussianElimination(Am, Bm, 4, 4);
+    vector<double> Bm = {111, 118, 114, 163};
+    vector<vector<double>> A_vector = {{13., 10., 1., 3.}, {4., 6., 8., 14.}, {7., 5., 2., 15.}, {9., 12., 16., 11.}};
+    Matrix Am(A_vector, 4, 4);
+
+    //GaussianElimination(Am, Bm);
+    printf("%g", Am.Determinant());
+    return 0;
 }
