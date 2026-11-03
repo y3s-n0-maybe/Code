@@ -42,7 +42,25 @@ class Matrix{
         void Print();
 
         Matrix operator*(Matrix);
+        //Matrix operator+(Matrix);
+        double& operator()(int, int);
 };
+
+double& Matrix::operator()(int i, int j){
+    if(i < 0){
+        i = rows + i;
+    }
+    if(j < 0){
+        j = cols + j;
+    }
+    if(i >= rows){
+        printf("Called %dth row when only %d rows exist\n", i, rows);
+    }else if (j >= cols){
+        printf("Called %dth column when only %d columns exist\n", j, cols);
+    }else{
+        return mat[i*cols + j];
+    }
+}
 
 Matrix::Matrix(vector<double> matrix, int row_size, int col_size){
     mat = matrix;
@@ -271,7 +289,7 @@ vector<double> Matrix::RemoveColumn(int col){
     x.resize(Rows());
 
     for(int i = Rows()-1; i > -1; i--){
-        x[i] = GetValue(i, col);
+        x[i] = GetValue(col, i);
         mat.erase(mat.begin() + (i*cols + col));
     }
 
@@ -280,29 +298,31 @@ vector<double> Matrix::RemoveColumn(int col){
     return x;
 }
 
-Matrix Matrix::operator*(Matrix B){ // doesn't work? possibly floating point bullshit
-    Matrix prod(rows,B.Cols());
-    if(cols == B.Rows())
-    {
+Matrix Matrix::operator*(Matrix B){ // tested, works :D
+    Matrix prod(Rows(), B.Cols());
+    if(Rows() == B.Rows()){
         int i,j,k;
         double sum;
-        for (i = 0; i < rows; i++)
+        for (i = 0; i < Rows(); i++)
         {
             for (j = 0; j < B.Cols(); j++)
             {
-                sum = 0.0;
-                for (k = 0; k < cols; k++)
+                sum = 0;
+                for (k = 0; k < Cols(); k++)
                 {
-                    sum += GetValue(i, k) * B.GetValue(k,j);
+                    sum += GetValue(i, k) * B(k,j);
                 }
-                prod.SetValue(i,j, sum);
+                if(fabs(sum) > tolerance){
+                    prod(i,j) = sum;
+                }else{
+                    prod(i, j) = 0;
+                }
             }
         }
         return prod;
     }
-    else
-    {
-        printf("Matrices not compatible\n");
+    else{
+        printf("Matricies Incompatible");
     }
 }
 
